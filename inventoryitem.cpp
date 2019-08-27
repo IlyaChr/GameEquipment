@@ -51,9 +51,29 @@ void InventoryItem::dragEnterEvent(QDragEnterEvent *event)
  */
 void InventoryItem::dropEvent(QDropEvent *event)
 {
+    //if source == target then do nothing
+    if (event->source() == this){
+        return;
+    }
+
     setPixmap(QPixmap::fromImage(event->mimeData()->imageData().value<QImage>()));
-    quantityItems++;
-    setText(event->mimeData()->text() + DELIMITER + QString::number(quantityItems));
+
+    QList<QString> list = event->mimeData()->text().split(DELIMITER);
+
+    bool flag = false;
+    int addedQuan = 0;
+
+    if (list.size()==2){
+        addedQuan = list.value(1).toInt(&flag);
+    }else {
+        quantityItems++;
+    }
+
+    if (flag){
+        quantityItems += addedQuan;
+    }
+
+    setText(event->mimeData()->text().split(DELIMITER).value(0) + DELIMITER + QString::number(quantityItems));
     event->acceptProposedAction();
 
 }
@@ -73,22 +93,19 @@ void InventoryItem::mouseMoveEvent(QMouseEvent *event)
         QDrag* drag = new QDrag( this);
         QMimeData* mimeData = new QMimeData;
         mimeData->setImageData( getPixmap().toImage());
-        mimeData->setText( getText().split(DELIMITER).value(0));
+        mimeData->setText(getText());
 
         drag->setMimeData(mimeData);
         drag->setPixmap(getPixmap());
 
         Qt::DropAction result = drag->exec(Qt::MoveAction);
-        //qDebug() << "Drop action result: " << result;
+        qDebug() << "Drop action result: " << result;
 
+        //only == MoveAction
         if ( result == Qt::MoveAction){
-            quantityItems--;
-            if (quantityItems > 0){
-                setText(getText().split(DELIMITER).value(0)+DELIMITER+QString::number(quantityItems));
-            }else {
-                setPixmap( QPixmap());
-                setText("");
-            }
+            quantityItems=0;
+            setPixmap( QPixmap());
+            setText("");
         }
 
     }
