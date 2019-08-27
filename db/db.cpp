@@ -3,11 +3,10 @@
 #include <QSqlQuery>
 #include <QDebug>
 #include <QStandardPaths>
-#include <QApplication>
 
+//for future better way to contain db files in windows folder
+//in this project we using applicationDirPath for simplicity
 //QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation)
-
-QString Db::DATABASE_PATH = "";
 
 /**
  * @brief Db::loadData
@@ -69,8 +68,6 @@ bool Db::saveData(int id_slot, int id_item, int quan)
 
 Db::Db()
 {
-    DATABASE_PATH = qApp->applicationDirPath() +"/db/database.sqlite";
-
     QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName(DATABASE_PATH);
 

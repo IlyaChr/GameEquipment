@@ -3,7 +3,7 @@
 
 #include <QObject>
 #include <QMap>
-
+#include <QApplication>
 
 class Db
 {
@@ -23,7 +23,7 @@ private:
     Db(const Db& copy) = delete;
     Db& operator=(const Db&) = delete;
 
-    static QString DATABASE_PATH;
+    const QString DATABASE_PATH = qApp->applicationDirPath() +"/db/database.sqlite";
 };
 
 #endif // DB_H
