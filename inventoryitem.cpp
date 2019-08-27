@@ -7,6 +7,7 @@
 #include <QApplication>
 #include <QDrag>
 #include <QDebug>
+#include <db/db.h>
 
 const QString InventoryItem::DELIMITER = ":";
 const QString InventoryItem::APPLE_SOUND_PATH = ":/sounds/assets/sounds/apple_sound.wav";
@@ -18,13 +19,27 @@ const QString InventoryItem::APPLE_SOUND_PATH = ":/sounds/assets/sounds/apple_so
  * @param hight
  * widgets item class for inventory cells
  */
-InventoryItem::InventoryItem(QWidget *parent, int width, int hight):
-    Item (parent)
+InventoryItem::InventoryItem(QWidget *parent, int width, int hight,int slot_id,int quantityItems):
+    Item (parent),
+    quantityItems(quantityItems),
+    slot_id(slot_id)
 {
     setAcceptDrops(true);
 
+    if (quantityItems > 0){
+        setPixmap(QPixmap(PATH_TO_APPLE_IMG));
+        setText(APPLE_NAME+DELIMITER+QString::number(quantityItems));
+    }
+
     resize( width, hight );
 }
+
+//for saving data in db
+InventoryItem::~InventoryItem()
+{
+    emit saveData(slot_id,APPLE_ID,quantityItems);
+}
+
 
 /**
  * @brief InventoryItem::dragEnterEvent
@@ -99,7 +114,7 @@ void InventoryItem::mouseMoveEvent(QMouseEvent *event)
         drag->setPixmap(getPixmap());
 
         Qt::DropAction result = drag->exec(Qt::MoveAction);
-        qDebug() << "Drop action result: " << result;
+        qDebug() << "result: " << result;
 
         //only == MoveAction
         if ( result == Qt::MoveAction){

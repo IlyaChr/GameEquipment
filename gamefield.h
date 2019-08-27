@@ -15,6 +15,11 @@ public:
     explicit GameField(QWidget *parent = nullptr);
     ~GameField() override;
 
+protected:
+
+    void closeEvent (QCloseEvent *event) override;
+
+
 private slots:
 
     void on_mainWindow_clicked();

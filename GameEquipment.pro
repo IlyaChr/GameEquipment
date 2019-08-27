@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui multimedia
+QT       += core gui multimedia sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        db/db.cpp \
         gamefield.cpp \
         inventory.cpp \
         inventoryitem.cpp \
@@ -33,6 +34,7 @@ SOURCES += \
         mainwindow.cpp
 
 HEADERS += \
+        db/db.h \
         gamefield.h \
         inventory.h \
         inventoryitem.h \

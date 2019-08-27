@@ -15,11 +15,20 @@ GameField::GameField(QWidget *parent) :
 
     //set inventory items widget in QTableWidget cells
     ui->inventory->initTable(3,2);
+
 }
 
 GameField::~GameField()
 {
     delete ui;
+}
+
+//for saving
+void GameField::closeEvent(QCloseEvent *event)
+{
+    event->ignore();
+    hide();
+    emit WidgetClosed();
 }
 
 /**

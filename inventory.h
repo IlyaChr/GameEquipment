@@ -12,7 +12,8 @@ public:
 
     void initTable(int rowSize, int columnSize);
 
-private:
+private slots:
+    void saveData(int id_slot,int id_item,int quant);
 };
 
 #endif // INVENTORY_H

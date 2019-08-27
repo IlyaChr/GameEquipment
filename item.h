@@ -22,6 +22,7 @@ public:
 
     const static QString PATH_TO_APPLE_IMG;
     const static QString APPLE_NAME;
+    const static int APPLE_ID;
 
 protected:
     void mousePressEvent( QMouseEvent* event) override;

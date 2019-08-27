@@ -7,7 +7,9 @@ class InventoryItem : public Item
 {
     Q_OBJECT
 public:
-    explicit InventoryItem( QWidget* parent = nullptr, int width = 1,int hight = 1);
+    explicit InventoryItem( QWidget* parent = nullptr, int width = 1,int hight = 1,int slot_id = 0,int quantityItems = 0);
+    ~InventoryItem() override;
+
 
     const static QString DELIMITER;
     const static QString APPLE_SOUND_PATH;
@@ -20,6 +22,10 @@ protected:
 
 private:
     int quantityItems = 0;
+    int slot_id = 0;
+
+signals:
+    void saveData(int id_slot,int id_item,int quant);
 
 };
 

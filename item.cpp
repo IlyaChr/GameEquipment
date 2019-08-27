@@ -13,6 +13,11 @@ const QString Item::PATH_TO_APPLE_IMG = ":/img/assets/img/apple.png";
 //name of item
 const QString Item::APPLE_NAME = "яблоко";
 
+
+//id of item
+const int Item::APPLE_ID = 1;
+
+
 //Class for item widget
 Item::Item(QWidget *parent) : QWidget(parent)
 {
@@ -23,6 +28,7 @@ Item::Item(QWidget *parent) : QWidget(parent)
 
     imageLabel->setAlignment( Qt::AlignVCenter | Qt::AlignHCenter );
     textLabel->setAlignment( Qt::AlignHCenter );
+
 
     resize( 300, 300 );
 }
