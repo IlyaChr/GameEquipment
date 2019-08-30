@@ -146,10 +146,10 @@ void InventoryItem::mousePressEvent(QMouseEvent *event)
 
         QSound::play(APPLE_SOUND_PATH);
 
+        quantityItems--;
         //for network
         emit dataHasChanged(slot_id,APPLE_ID,quantityItems);
 
-        quantityItems--;
         if (quantityItems > 0){
             setText(getText().split(DELIMITER).value(0)+DELIMITER+ QString::number(quantityItems));
         }else {

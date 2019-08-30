@@ -24,7 +24,7 @@ GameField::GameField(QWidget *parent,bool server) :
         ui->serverStatus->setStyleSheet("QLabel { color : red; }");
     }else {
         ui->serverStatus->setText("Клиент");
-        ui->serverStatus->setStyleSheet("QLabel { color : green; }");
+        ui->serverStatus->setStyleSheet("QLabel { color : green ; }");
     }
 
 
