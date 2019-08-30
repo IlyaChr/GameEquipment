@@ -31,6 +31,7 @@ private slots:
     void incomingConnection(qintptr socketDescriptor) override;
     void sockReady();
     void sockDisc();
+    bool parseFromJson(const QByteArray& array);
 
 signals:
     void getMessage(int id_slot,int id_item,int quant);

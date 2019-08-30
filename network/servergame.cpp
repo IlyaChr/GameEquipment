@@ -32,6 +32,9 @@ void ServerGame::sendMessage(int id_slot, int id_item, int quant)
         return;
     }
 
+
+    qDebug()<<id_slot<<":"<<id_item<<":"<<quant<<" - mes to client";
+
     //json
     QString message = QString("{"
                     "\"%1\":%2,"
@@ -40,6 +43,7 @@ void ServerGame::sendMessage(int id_slot, int id_item, int quant)
                     "}").arg(ID_SLOT,QString::number(id_slot),ID_ITEM,QString::number(id_item),QUAN,QString::number(quant));
 
     socket->write(message.toStdString().c_str());
+    socket->write("\n");
     qDebug()<<"Mes to client sended"<<endl;
 }
 
@@ -61,28 +65,15 @@ void ServerGame::sockReady()
 
         socket->waitForReadyRead(500);
 
-        data = socket->readAll();
+        //data = socket->readAll();
+        QList<QString> dataList;
 
-        doc = QJsonDocument::fromJson(data,&parseError);
+        while (!socket->atEnd()){
+            dataList.push_back(QString::fromStdString(socket->readLine().toStdString()).trimmed());
+        }
 
-        if (parseError.errorString().toInt() == QJsonParseError::NoError){
-
-            int id_slot;
-            int id_item;
-            int quant;
-
-            id_slot = doc.object().value(ServerGame::ID_SLOT).toInt();
-            id_item = doc.object().value(ServerGame::ID_ITEM).toInt();
-            quant = doc.object().value(ServerGame::QUAN).toInt();
-
-            //qDebug()<<id_slot<<":"<<id_item<<":"<<quant<<" - mes from server";
-
-            emit getMessage(id_slot,id_item,quant);
-
-
-        }else {
-
-            qDebug()<<"Ошибки с форматом данных на сервере:"<<parseError.errorString();
+        for ( const auto& value : dataList){
+            parseFromJson(value.toUtf8());
         }
     }
 }
@@ -95,4 +86,31 @@ void ServerGame::sockDisc()
         socket->deleteLater();
     }
 
+}
+
+bool ServerGame::parseFromJson(const QByteArray &array)
+{
+    doc = QJsonDocument::fromJson(array,&parseError);
+
+    if (!doc.isNull()){
+
+        int id_slot;
+        int id_item;
+        int quant;
+
+        id_slot = doc.object().value(ServerGame::ID_SLOT).toInt();
+        id_item = doc.object().value(ServerGame::ID_ITEM).toInt();
+        quant = doc.object().value(ServerGame::QUAN).toInt();
+
+        //qDebug()<<id_slot<<":"<<id_item<<":"<<quant<<" - mes from server";
+
+        emit getMessage(id_slot,id_item,quant);
+        return true;
+
+    }else {
+
+        qDebug()<<"Ошибки с форматом данных на клиенте:"<<parseError.errorString();
+    }
+
+    return false;
 }

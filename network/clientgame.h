@@ -24,6 +24,7 @@ private:
 private slots:
     void sockReady();
     void sockDisk();
+    bool parseFromJson(const QByteArray& array);
 
 public slots:
     bool connectToServer();

@@ -26,7 +26,7 @@ protected:
 
 private:
     int quantityItems = 0;
-    int slot_id = 0;
+    int slot_id;
 
 signals:
     void saveData(int id_slot,int id_item,int quant);

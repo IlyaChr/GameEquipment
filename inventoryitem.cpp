@@ -90,6 +90,7 @@ void InventoryItem::dropEvent(QDropEvent *event)
 
     //for network
     emit dataHasChanged(slot_id,APPLE_ID,quantityItems);
+    //qDebug()<<"slot_id dropEvent "<<slot_id<<"quan"<<quantityItems<<endl;
 
     setText(event->mimeData()->text().split(DELIMITER).value(0) + DELIMITER + QString::number(quantityItems));
     event->acceptProposedAction();
@@ -117,17 +118,20 @@ void InventoryItem::mouseMoveEvent(QMouseEvent *event)
         drag->setPixmap(getPixmap());
 
         Qt::DropAction result = drag->exec(Qt::MoveAction);
-        qDebug() << "result: " << result;
+        //qDebug() << "result: " << result;
 
         //only == MoveAction
         if ( result == Qt::MoveAction){
 
-            //for network
-            emit dataHasChanged(slot_id,APPLE_ID,quantityItems);
 
             quantityItems=0;
             setPixmap( QPixmap());
             setText("");
+
+            //for network
+            emit dataHasChanged(slot_id,APPLE_ID,quantityItems);
+
+            //qDebug()<<"slot_id mouseMoveEvent "<<slot_id<<"quan"<<quantityItems<<endl;
         }
 
     }
@@ -167,7 +171,6 @@ void InventoryItem::setItem(const int id_slot, const int id_item, int quant)
 
     quantityItems = quant;
 
-    //qDebug()<<id_slot<<":"<<id_item<<":"<<quant<<" - setItem";
 
     if (quantityItems > 0){
         setPixmap(QPixmap(PATH_TO_APPLE_IMG));
