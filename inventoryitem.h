@@ -14,6 +14,10 @@ public:
     const static QString DELIMITER;
     const static QString APPLE_SOUND_PATH;
 
+    int getSlot_id() const;
+
+    int getQuantityItems() const;
+
 protected:
     void dragEnterEvent( QDragEnterEvent* event) override;
     void dropEvent( QDropEvent* event) override;
@@ -26,6 +30,11 @@ private:
 
 signals:
     void saveData(int id_slot,int id_item,int quant);
+    void dataHasChanged(int id_slot,int id_item ,int quant);
+
+public slots:
+    void setItem(const int id_slot,const int id_item , int new_quant);
+
 
 };
 

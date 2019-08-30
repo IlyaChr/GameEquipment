@@ -88,6 +88,9 @@ void InventoryItem::dropEvent(QDropEvent *event)
         quantityItems += addedQuan;
     }
 
+    //for network
+    emit dataHasChanged(slot_id,APPLE_ID,quantityItems);
+
     setText(event->mimeData()->text().split(DELIMITER).value(0) + DELIMITER + QString::number(quantityItems));
     event->acceptProposedAction();
 
@@ -118,6 +121,10 @@ void InventoryItem::mouseMoveEvent(QMouseEvent *event)
 
         //only == MoveAction
         if ( result == Qt::MoveAction){
+
+            //for network
+            emit dataHasChanged(slot_id,APPLE_ID,quantityItems);
+
             quantityItems=0;
             setPixmap( QPixmap());
             setText("");
@@ -139,6 +146,9 @@ void InventoryItem::mousePressEvent(QMouseEvent *event)
 
         QSound::play(APPLE_SOUND_PATH);
 
+        //for network
+        emit dataHasChanged(slot_id,APPLE_ID,quantityItems);
+
         quantityItems--;
         if (quantityItems > 0){
             setText(getText().split(DELIMITER).value(0)+DELIMITER+ QString::number(quantityItems));
@@ -147,5 +157,34 @@ void InventoryItem::mousePressEvent(QMouseEvent *event)
             setText("");
         }
     }
+}
+
+void InventoryItem::setItem(const int id_slot, const int id_item, int quant)
+{
+    if (this->slot_id != id_slot){
+        return;
+    }
+
+    quantityItems = quant;
+
+    //qDebug()<<id_slot<<":"<<id_item<<":"<<quant<<" - setItem";
+
+    if (quantityItems > 0){
+        setPixmap(QPixmap(PATH_TO_APPLE_IMG));
+        setText(APPLE_NAME+DELIMITER+QString::number(quantityItems));
+    }else {
+        setPixmap( QPixmap());
+        setText("");
+    }
+}
+
+int InventoryItem::getQuantityItems() const
+{
+    return quantityItems;
+}
+
+int InventoryItem::getSlot_id() const
+{
+    return slot_id;
 }
 

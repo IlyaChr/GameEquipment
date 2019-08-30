@@ -2,7 +2,6 @@
 #define GAMEFIELD_H
 
 #include <QWidget>
-
 namespace Ui {
 class GameField;
 }
@@ -12,8 +11,10 @@ class GameField : public QWidget
     Q_OBJECT
 
 public:
-    explicit GameField(QWidget *parent = nullptr);
+    explicit GameField(QWidget *parent = nullptr,bool server = true);
     ~GameField() override;
+
+    bool isServer() const;
 
 protected:
 
@@ -27,6 +28,7 @@ private slots:
 private:
     Ui::GameField *ui;
 
+    bool server;
 
 signals:
     void WidgetClosed();

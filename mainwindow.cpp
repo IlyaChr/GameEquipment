@@ -1,8 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "QDebug"
+#include <QDebug>
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QMessageBox>
+
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -23,9 +25,20 @@ MainWindow::~MainWindow()
  */
 void MainWindow::on_newGame_clicked()
 {
-    hide();
 
-    gameField = new GameField();
+    QMessageBox msgBox;
+    msgBox.setText("Вы хотите быть сервером?");
+    msgBox.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
+    int res = msgBox.exec();
+
+    if (res == QMessageBox::Yes){
+        gameField = new GameField(nullptr,true);
+    }else {
+        gameField = new GameField(nullptr,false);
+    }
+
+    hide();
 
     connect( gameField, SIGNAL(WidgetClosed()), this, SLOT(backToMainWindow()));
 
@@ -53,7 +66,7 @@ void MainWindow::backToMainWindow()
         disconnect( gameField, SIGNAL(WidgetClosed()), this, SLOT(backToMainWindow()));
     }
 
-    delete gameField;
+    gameField->deleteLater();
 
     move(qApp->desktop()->availableGeometry(this).center()-rect().center());
 

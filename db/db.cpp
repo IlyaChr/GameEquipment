@@ -76,7 +76,7 @@ Db::Db()
         qDebug()<<"faild to open database"<<endl;
     }else {
 
-        qDebug()<<"Connected to Db"<<endl;
+        qDebug()<<"Connection to Db"<<endl;
     }
 }
 
@@ -90,5 +90,5 @@ Db::~Db()
 
     db.close();
 
-    qDebug()<<"Connected has closed"<<endl;
+    qDebug()<<"Connection to db has closed"<<endl;
 }

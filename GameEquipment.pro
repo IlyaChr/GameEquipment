@@ -4,7 +4,11 @@
 #
 #-------------------------------------------------
 
-QT       += core gui multimedia sql
+QT       += core
+QT       += gui
+QT       += multimedia
+QT       += sql
+QT       += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -31,7 +35,9 @@ SOURCES += \
         inventoryitem.cpp \
         item.cpp \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+        network/clientgame.cpp \
+        network/servergame.cpp
 
 HEADERS += \
         db/db.h \
@@ -39,7 +45,9 @@ HEADERS += \
         inventory.h \
         inventoryitem.h \
         item.h \
-        mainwindow.h
+        mainwindow.h \
+        network/clientgame.h \
+        network/servergame.h
 
 FORMS += \
         gamefield.ui \
