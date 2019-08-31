@@ -1,37 +1,18 @@
 #ifndef CLIENTGAME_H
 #define CLIENTGAME_H
 
-#include <QObject>
-#include <QTcpSocket>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonParseError>
+#include "network/network.h"
 
-class ClientGame : public QObject
+class ClientGame : public Network
 {
     Q_OBJECT
 public:
     explicit ClientGame();
-    ~ClientGame();
-
-private:
-    QTcpSocket* socket = nullptr;
-    QByteArray data;
-
-    QJsonDocument doc;
-    QJsonParseError parseError;
-
-private slots:
-    void sockReady();
-    void sockDisk();
-    bool parseFromJson(const QByteArray& array);
+    ~ClientGame() override;
 
 public slots:
-    bool connectToServer();
-    void sendMessage(int id_slot,int id_item,int quant);
+    bool start() override;
 
-signals:
-    void getMessage(int id_slot,int id_item,int quant);
 };
 
 #endif // CLIENTGAME_H

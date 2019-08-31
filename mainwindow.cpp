@@ -27,15 +27,26 @@ void MainWindow::on_newGame_clicked()
 {
 
     QMessageBox msgBox;
-    msgBox.setText("Вы хотите быть сервером?");
+    msgBox.setIcon(QMessageBox::Question);
+    msgBox.setText("Вы хотите быть сервером или клиентом?");
     msgBox.setStandardButtons(QMessageBox::Yes|QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::Yes);
+    msgBox.setButtonText(QMessageBox::Yes,"Сервер");
+    msgBox.setButtonText(QMessageBox::No,"Клиент");
     int res = msgBox.exec();
 
     if (res == QMessageBox::Yes){
-        gameField = new GameField(nullptr,true);
+        //attempt start server
+        if(!initNetwork(true) || !network){
+            return;
+        }
+        gameField = new GameField(nullptr,true,network);
     }else {
-        gameField = new GameField(nullptr,false);
+        //attempt start client
+        if(!initNetwork(false) || !network){
+            return;
+        }
+        gameField = new GameField(nullptr,false,network);
     }
 
     hide();
@@ -72,4 +83,27 @@ void MainWindow::backToMainWindow()
 
     show();
 }
+
+
+bool MainWindow::initNetwork(bool isServer)
+{
+    QString errorMes;
+
+    if (isServer){
+        network = new ServerGame();
+        errorMes = "Ошибка создания сервера!";
+    }else {
+        network = new ClientGame();
+        errorMes = "Ошибка подключения к серверу!";
+    }
+
+    if (!network->start()){
+        QMessageBox::critical(this, "Внимание",errorMes);
+        return false;
+
+    }
+    return true;
+}
+
+
 

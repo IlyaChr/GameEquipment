@@ -16,19 +16,13 @@ Inventory::Inventory(QWidget *parent):
 
    setFocusPolicy(Qt::NoFocus);
 
-
 }
 
 Inventory::~Inventory()
 {
-    if (myServer){
-        delete myServer;
+    if (network){
+        delete network;
     }
-
-    if (myClient){
-        delete myClient;
-    }
-
 }
 
 /**
@@ -37,12 +31,8 @@ Inventory::~Inventory()
  * @param columnSize
  * Populate cells by InventoryItem widgets
  */
-void Inventory::initTable(int rowSize, int columnSize, bool server)
+void Inventory::initTable(int rowSize, int columnSize,Network* network)
 {
-
-    this->server = server;
-    initNetwork(server);
-
     setRowCount(rowSize);
     setColumnCount(columnSize);
 
@@ -63,14 +53,8 @@ void Inventory::initTable(int rowSize, int columnSize, bool server)
             connect(item,&InventoryItem::saveData,this,&Inventory::saveData);
 
             //for network
-            if (server){
-              connect(item,&InventoryItem::dataHasChanged,myServer,&ServerGame::sendMessage);
-              connect(myServer,&ServerGame::getMessage,item,&InventoryItem::setItem);
-            }else {
-              connect(item,&InventoryItem::dataHasChanged,myClient,&ClientGame::sendMessage);
-              connect(myClient,&ClientGame::getMessage,item,&InventoryItem::setItem);
-            }
-
+            connect(item,&InventoryItem::dataHasChanged,network,&Network::sendMessage);
+            connect(network,&Network::getMessage,item,&InventoryItem::setItem);
 
             setCellWidget(i,j,item);
 
@@ -89,24 +73,6 @@ void Inventory::saveData(int id_slot, int id_item, int quant)
     }else {
 
         qDebug()<<"oops data for slot:"<<id_slot<< " not saved :( "<<endl;
-    }
-}
-
-
-void Inventory::initNetwork(bool server)
-{
-    if (server){
-        myServer = new ServerGame();
-        if (!myServer->startServer()){
-            QMessageBox::critical(this, "Внимание","Ошибка создания сервера!");
-            emit error();
-        }
-    }else {
-        myClient = new ClientGame();
-        if (!myClient->connectToServer()){
-            QMessageBox::critical(this, "Внимание","Ошибка подключения к серверу!");
-            emit error();
-        }
     }
 }
 

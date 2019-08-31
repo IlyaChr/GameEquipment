@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include "gamefield.h"
+#include "gamefield.h"
+#include "network/servergame.h"
+#include "network/clientgame.h"
 
 
 namespace Ui {
@@ -24,10 +27,14 @@ private slots:
 
     void backToMainWindow();
 
+    bool initNetwork(bool isServer);
+
 private:
     Ui::MainWindow *ui;
 
     GameField* gameField = nullptr;
+
+    Network* network = nullptr;
 
 };
 

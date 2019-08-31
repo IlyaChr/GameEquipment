@@ -37,6 +37,7 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         network/clientgame.cpp \
+        network/network.cpp \
         network/servergame.cpp
 
 HEADERS += \
@@ -47,6 +48,7 @@ HEADERS += \
         item.h \
         mainwindow.h \
         network/clientgame.h \
+        network/network.h \
         network/servergame.h
 
 FORMS += \
