@@ -1,7 +1,6 @@
 #ifndef SERVERGAME_H
 #define SERVERGAME_H
 
-#include <QTcpServer>
 #include "network/network.h"
 
 
