@@ -35,9 +35,11 @@ void Network::sockReady()
 
 void Network::sendMessage(int id_slot, int id_item, int quant)
 {
-    if (!socket){
+    if (!socket || (socket->state() != QTcpSocket::ConnectedState)){
         return;
     }
+
+
 
     //json
     QString message = QString("{"
